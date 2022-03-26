@@ -201,7 +201,7 @@ namespace DirectorySizes {
             }
          }
 
-         RaiseStatusUpdate(string.Format("Analyzing {0}", DirectoryHelper.ShortenPath(thisDirectoryDetail.Path)));
+         RaiseStatusUpdate(string.Format("Analyzing {0}", /*DirectoryHelper.ShortenPath*/(thisDirectoryDetail.Path)));
 
          //List files in this directory
          try {
