@@ -1,0 +1,144 @@
+﻿<Window x:Class="DirectorySizes.DirectoryBrowser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:DirectorySizes"
+        Title="Directory size browser" 
+        Loaded="Window_Loaded"
+        Height="700" 
+        Width="1000">
+    <Window.Resources>
+        <local:ProgressBarWidthConverter x:Key="ProgressBarWidthConverter"/>
+        <local:DateTimeColumnConverter x:Key="DateTimeColumnConverter"/>
+        <Style TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Margin" Value="1" />
+        </Style>
+        <Style TargetType="{x:Type GridSplitter}">
+            <Setter Property="Background" Value="LightSteelBlue" />
+        </Style>
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Padding" Value="3" />
+        </Style>
+    </Window.Resources>
+    <TabControl Margin="3">
+        <TabItem Header="Details">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Drive to analyze" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox Grid.Column="0" x:Name="Drives" Margin="3,0,3,0" Padding="3,0,3,0" />
+                                <Button x:Name="ChangeState" Grid.Column="1" Padding="3,0,3,0" Click="Button_Click" Margin="3,0,3,0">Start analysis</Button>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Grid.Row="1" Header="Directories" >
+                            <TreeView x:Name="DirectoryTree" SelectedItemChanged="DirectoryTree_SelectedItemChanged"/>
+                        </GroupBox>
+                        <GridSplitter Grid.Row ="1" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+                        <GroupBox Grid.Row="2" Header="Directories skipped" >
+                            <ListView x:Name="SkippedDirectories">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Width="500" Header="Path"/>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </GroupBox>
+                    </Grid>
+                    <GridSplitter Grid.Column ="0" Width="2" HorizontalAlignment="Right" VerticalAlignment="Stretch"/>
+                    <Grid Grid.Column="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <GroupBox Grid.Row="0" Header="Files in directory" >
+                                <ListView x:Name="FileList" MouseDoubleClick="FileList_MouseDoubleClick">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="File name" DisplayMemberBinding="{Binding Path=Name}" Width="200"/>
+                                            <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Path=FormattedBytes}" Width="90"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </GroupBox>
+                            <GridSplitter Grid.Row ="0" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+                            <GroupBox Grid.Row="1" Header="Top 100 files in path" >
+                                <ListView x:Name="Top100FileList" MouseDoubleClick="FileList_MouseDoubleClick">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="File name" DisplayMemberBinding="{Binding Path=Name}" Width="200"/>
+                                            <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Path=FormattedBytes}" Width="90"/>
+                                            <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path=Path}" Width="250"/>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </GroupBox>
+                        </Grid>
+                    </Grid>
+                </Grid>
+                <StatusBar Grid.Row="1" >
+                    <StatusBar.Items>
+                        <StatusBarItem Name="Status" Content="Idle" HorizontalAlignment="Left" Margin="0"/>
+                        <StatusBarItem Name="CountInfo" Content="0 directories, 0 files" HorizontalAlignment="Right"/>
+                    </StatusBar.Items>
+                </StatusBar>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Statistics" IsEnabled="False" x:Name="StatisticsTab">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <GroupBox x:Name="groupBox" Grid.Row="0" Header="File types" >
+                    <ListView x:Name="FileTypeList" SelectionChanged="FileTypeList_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="100" Header="Total percentage" x:Name="TotalPercentageColumn">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ProgressBar Height ="15" Value="{Binding Mode=OneWay, Path=TotalPercentage}" Width="{Binding Width, ElementName=TotalPercentageColumn, Converter={StaticResource ProgressBarWidthConverter}, Mode=OneWay}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Width="100" Header="Extension" DisplayMemberBinding="{Binding Path=Extension}"/>
+                                <GridViewColumn Width="100" Header="Sum of bytes" DisplayMemberBinding="{Binding Path=FormattedTotalBytes}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
+                <GroupBox Grid.Row="1" Header="Top 100 files of selected type"  >
+                    <ListView x:Name="Top100ByExtensionList" MouseDoubleClick="FileList_MouseDoubleClick">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="File name" DisplayMemberBinding="{Binding Path=Name}" Width="200"/>
+                                <GridViewColumn Header="Size" DisplayMemberBinding="{Binding Path=FormattedBytes}" Width="90"/>
+                                <GridViewColumn Header="Last accessed" DisplayMemberBinding="{Binding Path=LastAccessed, Converter={StaticResource DateTimeColumnConverter} }" Width="130"/>
+                                <GridViewColumn Header="Path" DisplayMemberBinding="{Binding Path=Path}" Width="250"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>
