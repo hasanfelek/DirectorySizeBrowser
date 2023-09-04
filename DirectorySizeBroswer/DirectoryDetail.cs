@@ -1,4 +1,4 @@
-﻿namespace DirectorySizes
+﻿namespace DirectorySizeBroswer
 {
     /// <summary>
     /// Class to contain information about a directory

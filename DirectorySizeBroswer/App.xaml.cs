@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DirectorySizes
+namespace DirectorySizeBroswer
 {
     /// <summary>
     /// Interaction logic for App.xaml

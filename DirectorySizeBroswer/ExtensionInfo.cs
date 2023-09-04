@@ -1,4 +1,4 @@
-﻿namespace DirectorySizes
+﻿namespace DirectorySizeBroswer
 {
     /// <summary>
     /// HOlds information about an extension

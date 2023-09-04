@@ -1,7 +1,7 @@
-﻿<Application x:Class="DirectorySizes.App"
+﻿<Application x:Class="DirectorySizeBroswer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:DirectorySizes"
+             xmlns:local="clr-namespace:DirectorySizeBroswer"
              StartupUri="DirectoryBrowser.xaml">
     <Application.Resources>
          

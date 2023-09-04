@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DirectorySizes
+namespace DirectorySizeBroswer
 {
 
     /// <summary>
