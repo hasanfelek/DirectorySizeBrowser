@@ -39,6 +39,7 @@ namespace DirectorySizes
                         {
                             System.Diagnostics.Process.Start(adminProcess);
                             // quit after starting the new process
+                            Application.Current.Shutdown();
                             return;
                         }
                         catch (System.Exception exception)
@@ -54,6 +55,7 @@ namespace DirectorySizes
 
             this.MainWindow = new DirectoryBrowser();
             this.MainWindow.ShowDialog();
+            Application.Current.Shutdown();
         }
     }
 }
