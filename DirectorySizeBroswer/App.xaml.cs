@@ -26,7 +26,7 @@ namespace DirectorySizeBroswer
                 if (!principal.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
                 {
                     result = System.Windows.MessageBox.Show("Can the application run in elevated mode in order to access all files?",
-                       "Directory size browser", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+                        "Directory Size Browser", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
                     if (result == System.Windows.MessageBoxResult.Yes)
                     {
                         // Re-run the application with administrator privileges
@@ -44,7 +44,7 @@ namespace DirectorySizeBroswer
                         }
                         catch (System.Exception exception)
                         {
-                            System.Windows.MessageBox.Show(exception.Message, "Directory size browser",
+                            System.Windows.MessageBox.Show(exception.Message, "Directory Size Browser",
                                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Exclamation);
                             return;
                         }
