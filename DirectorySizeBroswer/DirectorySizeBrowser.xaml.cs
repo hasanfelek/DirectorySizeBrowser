@@ -83,7 +83,7 @@ namespace DirectorySizeBroswer
             System.Windows.Input.Mouse.OverrideCursor = null;
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void StartAnalysisButtonClick(object sender, System.Windows.RoutedEventArgs e)
         {
             System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             this.StartStopAction();

@@ -1,4 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace DirectorySizeBroswer
 {
@@ -7,11 +13,11 @@ namespace DirectorySizeBroswer
     /// </summary>
     public partial class App : Application
     {
-        public App()
+        protected override void OnStartup(StartupEventArgs e)
         {
             System.Security.Principal.WindowsIdentity identity;
             System.Security.Principal.WindowsPrincipal principal;
-            MessageBoxResult result;
+            System.Windows.MessageBoxResult result;
             System.Diagnostics.ProcessStartInfo adminProcess;
 
             System.Windows.Input.Mouse.OverrideCursor = System.Windows.Input.Cursors.AppStarting;
@@ -33,29 +39,27 @@ namespace DirectorySizeBroswer
                         adminProcess = new System.Diagnostics.ProcessStartInfo();
                         adminProcess.UseShellExecute = true;
                         adminProcess.WorkingDirectory = System.Environment.CurrentDirectory;
-                        adminProcess.FileName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                        adminProcess.FileName = Environment.ProcessPath;
                         adminProcess.Verb = "runas";
                         try
                         {
                             System.Diagnostics.Process.Start(adminProcess);
                             // quit after starting the new process
-                            Application.Current.Shutdown();
-                            return;
+                            this.Shutdown(0);
                         }
                         catch (System.Exception exception)
                         {
                             System.Windows.MessageBox.Show(exception.Message, "Directory Size Browser",
                                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Exclamation);
-                            return;
+                            this.Shutdown(-1);
                         }
                     }
                 }
 
             } // --- Alternative for using manifest for elevated privileges
 
-            this.MainWindow = new DirectoryBrowser();
+            this.MainWindow = new DirectorySizes.DirectoryBrowser();
             this.MainWindow.ShowDialog();
-            Application.Current.Shutdown();
         }
     }
 }

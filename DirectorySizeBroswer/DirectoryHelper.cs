@@ -258,7 +258,7 @@ namespace DirectorySizeBroswer
                                 Path = fileInfo.DirectoryName,
                                 Size = fileInfo.Length,
                                 LastAccessed = fileInfo.LastAccessTime,
-                                Extension = fileInfo.Extension,
+                                Extension = fileInfo.Extension.ToLower(),
                                 DirectoryDetail = thisDirectoryDetail
                             });
                         }

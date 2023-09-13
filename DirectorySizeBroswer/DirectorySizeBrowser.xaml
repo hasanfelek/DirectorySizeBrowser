@@ -48,7 +48,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <ComboBox Grid.Column="0" x:Name="Drives" Margin="3,0,3,0" Padding="3,0,3,0" />
-                                <Button x:Name="ChangeState" Grid.Column="1" Padding="3,0,3,0" Click="Button_Click" Margin="3,0,3,0">Start analysis</Button>
+                                <Button x:Name="ChangeState" Grid.Column="1" Padding="3,0,3,0" Click="StartAnalysisButtonClick" Margin="3,0,3,0">Start analysis</Button>
                             </Grid>
                         </GroupBox>
                         <GroupBox Grid.Row="1" Header="Directories" >
